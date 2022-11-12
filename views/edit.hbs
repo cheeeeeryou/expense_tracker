@@ -1,7 +1,14 @@
 <form action="/records/{{ record._id }}/edit" method="POST">
   <input type="text" placeholder="name" name="name" value="{{ record.name }}">
   <input type="date" placeholder="date" name="date" value="{{ record.date }}">
-  <input type="number" placeholder="category" name="categoryId" value="{{ record.categoryId }}">
+  <select class="form-select" id="categoryId" name="categoryId">
+    <option disabled selected>類別*</option>
+    <option value="1">飲食</option>
+    <option value="2">交通</option>
+    <option value="3">娛樂</option>
+    <option value="4">日用品</option>
+    <option value="5">其他</option>
+  </select>
   <input type="number" placeholder="amount" name="amount" value="{{ record.amount }}">
   <button type="submit">Save</button>
   <a href="/">back</a>

@@ -49,12 +49,12 @@ app.post('/records', (req, res) => {
   const date = req.body.date
   const categoryId = Number(req.body.categoryId)
   const amount = req.body.amount       // 從 req.body 拿出表單裡的資料
-  console.log(categoryId)
   return Record.create({ name, date, categoryId, amount })     // 存入資料庫
     .then(() => res.redirect('/')) // 新增完成後導回首頁
     .catch(error => console.log(error))
 })
 
+// edit func.
 app.get('/records/:id/edit', (req, res) => {
   const id = req.params.id
   return Record.findById(id)
@@ -74,6 +74,14 @@ app.post('/records/:id/edit', (req, res) => {
       records.amount = amount
       return records.save()
     })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
+app.post('/records/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Record.findById(id)
+    .then(record => record.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
