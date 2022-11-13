@@ -12,11 +12,7 @@
       <option value="6">所有類別</option>
     </select>
   </form>
-
-<div>
-  <p>這個月的總花費是{{ totalAmount }}元</p>
-</div>
-
+  
 
   <ul>
     {{#each records}}
@@ -34,4 +30,6 @@
     {{/each}}
   </ul>
 
- 
+  <div>
+    <p>這個月在這類型的花費是{{total}}元</p>
+  </div>

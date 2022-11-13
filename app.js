@@ -14,6 +14,19 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express()
 
+
+
+//login
+app.get('/login', (req, res) => {
+  res.render('login')
+})
+
+app.post('/login', (req, res) => {
+})
+app.get('/register', (req, res) => {
+  res.render('register')
+})
+
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useFindAndModify: false,
