@@ -19,21 +19,21 @@ router.post('/', (req, res) => {
 })
 
 // edit
-router.get('/:id', (req, res) => {
-  const _id = req.params.id
-  const userId = req.user._id
-  return Record.findOne({ _id, userId })
+router.get('/:id/edit', (req, res) => {
+  const id = req.params.id
+  const userId = req.user.id
+  return Record.findOne({ id, userId })
     .lean()
     .then((records) => res.render('edit', { records }))
     .catch((err) => console.log(err))
 })
 
 // update 
-router.put('/:id', (req, res) => {
-  const _id = req.params.id
-  const userId = req.user._id
+router.put('/:id/edit', (req, res) => {
+  const id = req.params.id
+  const userId = req.user.id
   const { name, date, categoryId, amount } = req.body
-  return Record.findOne({ _id, userId })
+  return Record.findOne({ id, userId })
     .then((records) => {
       records.name = name
       records.date = date
@@ -46,10 +46,10 @@ router.put('/:id', (req, res) => {
 })
 
 // delete 
-router.delete('/:id', (req, res) => {
-  const _id = req.params.id
-  const userId = req.user._id
-  return Record.findOne({ _id, userId })
+router.delete('records/:id/delete', (req, res) => {
+  const id = req.params.id
+  const userId = req.user.id
+  return Record.findOne({ id, userId })
     .then((records) => records.remove())
     .then(() => res.redirect('/'))
     .catch((err) => console.log(err))

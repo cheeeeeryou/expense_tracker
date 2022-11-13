@@ -1,5 +1,5 @@
-const passport = require('passport')
 const bcrypt = require('bcryptjs')
+const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const User = require('../models/user')
 
@@ -23,8 +23,7 @@ module.exports = app => {
         })
       })
       .catch(err => done(err, false))
-  }))
-
+  }));
 
   // 設定序列化與反序列化
   passport.serializeUser((user, done) => {

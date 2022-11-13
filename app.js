@@ -1,6 +1,7 @@
 // app.js
 const express = require('express')
 const session = require('express-session')
+const app = express()
 const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
@@ -14,22 +15,6 @@ const usePassport = require('./config/passport')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
-const app = express()
-
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(methodOverride('_method'))
-usePassport(app)
-
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
-app.set('view engine', 'hbs')
-app.use(routes)
-
-app.use(session({
-  secret: 'ThisIsMySecret',
-  resave: false,
-  saveUninitialized: true
-}))
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -48,12 +33,37 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true
+}))
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
+
+usePassport(app)
+
+app.use((req, res, next) => {
+  console.log(req.user)
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
+
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
+
+
+
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
   res.locals.user = req.user
   next()
 })
 
+app.use(routes)
 
 // 設定 port 3000
 app.listen(3000, () => {
