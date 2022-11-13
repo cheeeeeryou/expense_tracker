@@ -1,4 +1,3 @@
-<a href="./records/new">新增一筆支出</a>
 <div>
   <form action="/category" method="GET">
     <select class="form-select" id="categoryId" name="categoryId" "
@@ -13,10 +12,9 @@
     </select>
   </form>
 
-<div>
-  <p>這個月的總花費是{{ totalAmount }}元</p>
-</div>
-
+  <div>
+    <p>這個月在這類型的花費是{{totalSelect}}元</p>
+  </div>
 
   <ul>
     {{#each records}}
@@ -34,4 +32,4 @@
     {{/each}}
   </ul>
 
- 
+  <a href="/">back</a>

@@ -16,6 +16,7 @@ const app = express()
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
+  useFindAndModify: false,
   useUnifiedTopology: true,
   useCreateIndex: true
 }) // 設定連線到 mongoDB
@@ -89,22 +90,52 @@ app.post('/records/:id/delete', (req, res) => {
     .catch(error => console.log(error))
 })
 
+app.get('/', (req, res) => {
+  return Record.find()
+    .lean()
+    .sort({ date: 'desc' })
+    .then((records) => {
+      let totalAmount = 0
+      for (let i = 0; i < records.length; i++) {
+        totalAmount += records[i].amount
+      }
+      return res.render('index', { totalAmount })
+    })
+    .catch((err) => console.log(err))
+})
+
 
 //total
 app.get('/category', (req, res) => {
   const categoryId = Number(req.query.categoryId)
+  if (categoryId === 6) {
+    return Record.find()
+      .lean()
+      .sort({ date: 'desc' })
+      .then((records) => {
+        let totalSelect = 0
+        for (let i = 0; i < records.length; i++) {
+          totalSelect += records[i].amount
+        }
+        return res.render('category', { records, totalSelect })
+      })
+      .catch((err) => console.log(err))
+  }
   return Record.find({ categoryId })
     .lean()
     .sort({ date: 'desc' })
     .then((records) => {
-      let total = 0
+      let totalSelect = 0
       for (let i = 0; i < records.length; i++) {
-        total += records[i].amount
+        totalSelect += records[i].amount
       }
-      res.render('index', { records, total })
+      res.render('category', { records, totalSelect })
     })
     .catch((err) => console.log(err))
 })
+
+
+
 
 
 
