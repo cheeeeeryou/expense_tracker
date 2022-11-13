@@ -4,6 +4,7 @@ const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const Record = require('./models/record')
+const category = require('./models/category')
 
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
@@ -36,6 +37,7 @@ app.set('view engine', 'hbs')
 app.get('/', (req, res) => {
   Record.find()
     .lean()
+    .sort({ _id: 'desc' })
     .then(records => res.render('index', { records }))
     .catch(error => console.error(error))
 })
@@ -78,6 +80,7 @@ app.post('/records/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
+//delete
 app.post('/records/:id/delete', (req, res) => {
   const id = req.params.id
   return Record.findById(id)
@@ -85,6 +88,25 @@ app.post('/records/:id/delete', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
+
+
+//total
+app.get('/category', (req, res) => {
+  const categoryId = Number(req.query.categoryId)
+  return Record.find({ categoryId })
+    .lean()
+    .sort({ date: 'desc' })
+    .then((records) => {
+      let total = 0
+      for (let i = 0; i < records.length; i++) {
+        total += records[i].amount
+      }
+      res.render('index', { records, total })
+    })
+    .catch((err) => console.log(err))
+})
+
+
 
 // 設定 port 3000
 app.listen(3000, () => {

@@ -1,8 +1,9 @@
-const Category = require('../category')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-const db = require('../../config/mongoose')
+const Category = require('../category')
+const mongoose = require('mongoose')
+const db = mongoose.connection
 
 const categoryData = [
   { id: 1, name: '飲食' },

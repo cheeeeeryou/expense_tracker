@@ -1,18 +1,32 @@
 <a href="./records/new">新增一筆支出</a>
+<div>
+  <form action="/category" method="GET">
+    <select class="form-select" id="categoryId" name="categoryId" "
+      onchange=" this.form.submit()">
+      <option value="1">飲食</option>
+      <option value="2">交通</option>
+      <option value="3">娛樂</option>
+      <option value="4">日用品</option>
+      <option value="5">其他</option>
+      <option value="6">所有類別</option>
+    </select>
+  </form>
 
-<div>{{total}}</div>
+  <ul>
+    {{#each records}}
+    <li>
+      {{this.name}}
+      {{this.date}}
+      {{this.categoryId}}
+      {{this.amount}}
+      <a href="./records/{{ this._id }}/edit">edit</a>
+      <form action="./records/{{ this._id }}/delete" method="POST" style="display: inline;">
+        <button type="submit">delete</button>
+      </form>
+    </li>
+    {{/each}}
+  </ul>
 
-<ul>
-  {{#each records}}
-  <li>
-    {{this.name}}
-    {{this.date}}
-    {{this.categoryId}}
-    {{this.amount}}
-    <a href="./records/{{ this._id }}/edit">edit</a>
-    <form action="./records/{{ this._id }}/delete" method="POST" style="display: inline;">
-      <button type="submit">delete</button>
-    </form>
-  </li>
-  {{/each}}
-</ul>
+  <div>
+    <p>這個月在這類型的花費是{{total}}元</p>
+  </div>
