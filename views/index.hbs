@@ -12,7 +12,7 @@
       <option value="6">所有類別</option>
     </select>
   </form>
-  
+
 
   <ul>
     {{#each records}}
@@ -22,8 +22,8 @@
       {{this.categoryId}}
       {{this.category}}
       {{this.amount}}
-      <a href="./records/{{ this._id }}/edit">edit</a>
-      <form action="./records/{{ this._id }}/delete" method="POST" style="display: inline;">
+      <a href="./records/{{ this._id }}?_method=PUT">edit</a>
+      <form action="./records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
         <button type="submit">delete</button>
       </form>
     </li>

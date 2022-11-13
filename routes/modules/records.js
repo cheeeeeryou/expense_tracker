@@ -10,7 +10,6 @@ router.get('/new', (req, res) => {
 // add
 router.post('/', (req, res) => {
   const userId = req.user._id
-  //add userId to each record
   req.body.userId = userId
   return Record.create(req.body)
     .then(() => {
