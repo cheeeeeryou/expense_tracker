@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
+const Category = require('../../models/category')
+const moment = require('moment')
 
 // edit 
 router.get('/new', (req, res) => {
@@ -19,21 +21,38 @@ router.post('/', (req, res) => {
 })
 
 // edit
-router.get('/:id/edit', (req, res) => {
-  const id = req.params.id
-  const userId = req.user.id
-  return Record.findOne({ id, userId })
+router.get('/:id', (req, res) => {
+  const _id = req.params.id
+  const userId = req.user._id
+  return Record.findOne({ _id, userId })
     .lean()
-    .then((records) => res.render('edit', { records }))
+    .then(records => {
+      records.date = moment(records.date).format('YYYY-MM-DD')
+      Category.find({})
+        .sort({ id: 'asc' })
+        .lean()
+        .then(categories => {
+          categories.forEach(category => {
+            if (records.categoryId == category.id) {
+              category.selected = 'selected'
+              categoryData.push(category)
+            } else {
+              categoryData.push(category)
+            }
+          })
+          res.render('edit', { records, categoryData })
+        })
+    })
     .catch((err) => console.log(err))
 })
 
 // update 
-router.put('/:id/edit', (req, res) => {
-  const id = req.params.id
-  const userId = req.user.id
+router.put('/:id', (req, res) => {
+  const _id = req.params.id
+  const userId = req.user._id
   const { name, date, categoryId, amount } = req.body
-  return Record.findOne({ id, userId })
+
+  return Record.findOne({ _id, userId, })
     .then((records) => {
       records.name = name
       records.date = date
@@ -46,10 +65,10 @@ router.put('/:id/edit', (req, res) => {
 })
 
 // delete 
-router.delete('records/:id/delete', (req, res) => {
-  const id = req.params.id
-  const userId = req.user.id
-  return Record.findOne({ id, userId })
+router.delete('/:id', (req, res) => {
+  const _id = req.params.id
+  const userId = req.user._id
+  return Record.findOne({ _id, userId })
     .then((records) => records.remove())
     .then(() => res.redirect('/'))
     .catch((err) => console.log(err))

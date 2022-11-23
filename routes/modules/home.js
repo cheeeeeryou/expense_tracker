@@ -21,11 +21,12 @@ router.get('/', (req, res) => {
     .lean()
     .sort({ date: 'desc' })
     .then((records) => {
-      let total = 0
+      let totalAmount = 0
       for (let i = 0; i < records.length; i++) {
-        total += records[i].amount
+        totalAmount += records[i].amount
+        console.log('Hello')
       }
-      res.render('index', { records, total })
+      res.render('index', { totalAmount })
     })
     .catch((err) => console.log(err))
 })
