@@ -1,0 +1,3 @@
+SESSION_SECRET=ThisIsMySecret
+MONGODB_URI="mongodb+srv://alpha:camp@cluster0.8bihyc5.mongodb.net/nest_egg?retryWrites=true&w=majority"
+PORT=3000
